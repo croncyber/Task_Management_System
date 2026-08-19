@@ -1,0 +1,160 @@
+<div class="step-text">
+<p>Sometimes you need to create a class whose behavior depends on the current state of its object. If there are few states and no complex transitions between them, an if-else statement or a switch statement will be enough. But as the number of states grows and their logic becomes more complex, the code of the class may start looking more like spaghetti and hard to extend. The <strong>State design pattern</strong> might help you avoid such mishaps.</p>
+<h5 id="the-problem">The problem</h5>
+<p>Imagine that you are writing a program simulating the interaction between an observer and a wild animal. Suppose that the animal can be in one of the two states, calm and angry, and react to the observer depending on the state it is currently in. We must keep in mind that later we may want to simulate the animal's behavior in greater detail and add more states, such as frightened, hungry, tired, etc.</p>
+<p>First, we'll determine the animal's behavior in different states and how it transitions from one state to another. Let's presume that when the animal is calm it rests in the grass and when it is angry it chases the observer. For simplicity reasons, let's determine that the current state of the animal changes after a while. We will represent it by the following class:</p>
+<pre><code class="language-java">class Animal {
+    private String state = "calm";
+
+    public void observe() {
+        if (state.equals("calm")) {
+            System.out.println(this + " is lying in the grass.");
+        } else {
+            System.out.println(this + " is chasing you. Run away!");
+        }
+    }
+
+    public void onTimePassed() {
+        if (state.equals("calm")) {
+            state = "angry";
+        } else {
+            state = "calm";
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Animal";
+    }
+}</code></pre>
+<p>Now let's test our <code class="language-java">Animal</code> implementation:</p>
+<pre><code class="language-java">class Main {
+    public static void main(String[] args) {
+        Animal animal = new Animal();
+        for (int i = 0; i &lt; 4; i++) {
+            animal.observe();
+            animal.onTimePassed();
+        }
+    }
+}</code></pre>
+<p>We will get this output:</p>
+<pre><code class="language-no-highlight">Animal is lying in the grass.
+Animal is chasing you. Run away!
+Animal is lying in the grass.
+Animal is chasing you. Run away!</code></pre>
+<p>Not bad! But we are going to have some issues if we try to extend this class with new behavior, adding more states and/or announcements of state changes. If the behavior gets more complex, the class will grow in size. If the behavior gets more diverse, the class will have too many responsibilities. This is where the State design pattern comes to our rescue.</p>
+<h5 id="the-idea-of-a-pattern">The idea of a pattern</h5>
+<p>The State design pattern helps us avoid the above problem. The idea is to introduce an abstraction that will represent different states of a class. The abstraction will describe the common interface for classes encapsulating the logic of each state. This will allow an instance of the class to vary its behavior depending on its state. For clients, it will look like the class of the object changes during runtime. The image below shows a UML diagram of the State pattern.</p>
+<p><picture><img alt="State design pattern" height="520" name="Design_Patterns_-_State.svg" src="https://ucarecdn.com/77b61717-a03c-4467-abea-f0dde77d1873/" width="1474"/></picture></p>
+<p>Let's go through all elements of this diagram. <code class="language-java">Context</code> defines an interface for interaction with clients and stores a reference to a <code class="language-java">ConcreteState</code> object that represents the current state of <code class="language-java">Context</code>. <code class="language-java">State</code> defines an interface for encapsulating the behavior associated with a concrete state of <code class="language-java">Context</code>. <code class="language-java">ConcreteState</code> classes implement the <code class="language-java">State</code> interface and determine the behavior associated with a certain concrete state of <code class="language-java">Context</code>. The transitions between the states may be defined either in <code class="language-java">Context</code> or in <code class="language-java">ConcreteState</code> classes. The latter option is more flexible but requires <code class="language-java">ConcreteState</code> to have a reference to <code class="language-java">Context</code> in order to set its current state. It also requires any <code class="language-java">ConcreteState</code> class to be aware of at least one other <code class="language-java">ConcreteState</code>.</p>
+<p>Now let's apply the State pattern for our <code class="language-java">Animal</code> class and extend it a bit by adding announcements when the  <code class="language-java">Animal</code> object enters a new state.</p>
+<h5 id="pattern-implementation">Pattern implementation</h5>
+<p>First, we define a common interface for different states. This interface will correspond to <code class="language-java">State</code> in the diagram we looked at in the previous section:</p>
+<pre><code class="language-java">interface State {
+
+    void observe(); // used to observe the current behavior of Animal
+
+    void onStateEntry(); // invoked when the state changes
+
+    void onTimePassed(); // triggers the change of the state
+}</code></pre>
+<p>The <code class="language-java">Animal</code> class will correspond to <code class="language-java">Context</code> in the diagram. We will add a <code class="language-java">State state</code> field to it for storing the current state and the corresponding setter. We will delegate the invocations of the <code class="language-java">observe</code> and <code class="language-java">onTimePassed</code> methods to the corresponding methods of the object representing the current state.</p>
+<pre><code class="language-java">class Animal {
+    private State state;
+
+    public void observe() {
+        state.observe();
+    }
+
+    public void onTimePassed() {
+        state.onTimePassed();
+    }
+
+    public void setState(State state) {
+        if (this.state == null) {
+            this.state = state; // no announcement on initial assignment
+        } else {
+            this.state = state;
+            this.state.onStateEntry();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Animal";
+    }
+}</code></pre>
+<p>After that, we create implementations of the <code class="language-java">State</code> interface for the two states. Each of them will correspond to a <code class="language-java">ConcreteState</code> in the diagram. In this example, we choose to let the state objects define when and where their transition to another state happens.</p>
+<p>Here is the implementation of the "calm" state:</p>
+<pre><code class="language-java">class CalmState implements State {
+    private final Animal animal;
+
+    CalmState(Animal animal) {
+        this.animal = animal;
+    }
+
+    @Override
+    public void observe() {
+        System.out.println(animal + " is lying in the grass.");
+    }
+
+    @Override
+    public void onStateEntry() {
+        System.out.println(animal + " calms down and stops.");
+    }
+
+    @Override
+    public void onTimePassed() {
+        animal.setState(new AngryState(animal));
+    }
+}</code></pre>
+<p>And here is the implementation of the "angry" state:</p>
+<pre><code class="language-java">class AngryState implements State {
+    private final Animal animal;
+
+    AngryState(Animal animal) {
+        this.animal = animal;
+    }
+
+    @Override
+    public void observe() {
+        System.out.println(animal + " is chasing you. Run away!");
+    }
+
+    @Override
+    public void onStateEntry() {
+        System.out.println(animal + " has spotted you.");
+    }
+
+    @Override
+    public void onTimePassed() {
+        animal.setState(new CalmState(animal));
+    }
+}</code></pre>
+<p>Now we are finally ready to test our new implementation!</p>
+<h5 id="showcase">Showcase</h5>
+<p>Let's test the behavior of the <code class="language-java">Animal</code> class the same way we did before:</p>
+<pre><code class="language-java">class Main {
+    public static void main(String[] args) {
+        Animal animal = new Animal();
+        animal.setState(new CalmState(animal));
+
+        for (int i = 0; i &lt; 4; i++) {
+            animal.observe();
+            animal.onTimePassed();
+        }
+    }
+}</code></pre>
+<p>Now let's run this code and see the output (this time we will have announcements displayed when the animal's state changes):</p>
+<pre><code class="language-no-highlight">Animal is lying in the grass.
+Animal has spotted you.
+Animal is chasing you. Run away!
+Animal calms down and stops.
+Animal is lying in the grass.
+Animal has spotted you.
+Animal is chasing you. Run away!
+Animal calms down and stops.</code></pre>
+<p>We can extend the animal's behavior by adding other implementations of <code class="language-java">State</code> and defining their transitions.</p>
+<h5 id="conclusion">Conclusion</h5>
+<p>The State pattern helps when the behavior of your class depends on its current state and changes during runtime, or when the methods of your class have a lot of <a class="theory-lookup not-relevant" href="/learn/step/19054" target="_blank" title="In Java, an if-else statement is a conditional statement that allows a program to make a decision between two courses of action based on whether a certain condition is true or false. | It consists of an if keyword followed by a boolean expression in parentheses, and two bodies enclosed in curly braces - one for the if case and one for the else case. If the expression is true, the code inside the first set of curly braces is executed, and if it's false, the code inside the second set of curly braces is executed.">if-else statements</a>. However, this pattern requires you to create extra interfaces and implementations and may lead to excessive complexity of the code if your class has few states which change rarely. If used in appropriate cases, this pattern allows for easy extension of the class by adding more states represented by new classes that encapsulate the necessary behavior.</p>
+</div>

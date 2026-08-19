@@ -1,0 +1,100 @@
+<div class="step-text">
+<p>In Java, the <code class="language-java">Deque</code> interface is implemented by classes such as <strong><code class="language-java">ArrayDeque</code></strong> and <strong><code class="language-java">LinkedList</code></strong>. This section offers a brief introduction to the two main Java implementations of the <code class="language-java">Deque</code> interface:</p>
+<ol>
+<li>
+<p><code class="language-java">ArrayDeque</code>: A resizable-array implementation of the <code class="language-java">Deque</code> interface. It's typically faster than <code class="language-java">LinkedList</code> when used as a queue and outperforms <code class="language-java">Stack</code> when used as a stack. <code class="language-java">ArrayDeque</code> does not allow null elements. If you need a resizable <code class="language-java">Deque</code> supporting null elements, consider <code class="language-java">LinkedList</code>.</p>
+</li>
+<li>
+<p><code class="language-java">LinkedList</code>: A doubly-linked list implementation of the <code class="language-java">Deque</code> interface. It supports all optional list operations and allows all elements, including null. In addition to deque operations, the <code class="language-java">LinkedList</code> class provides various methods for manipulating elements at both ends.</p>
+</li>
+</ol>
+<h5 id="api">API</h5>
+<p>Java's <code class="language-java">ArrayDeque</code> has two constructors:</p>
+<ol>
+<li><code class="language-java"><strong>ArrayDeque()</strong></code>: This no-argument constructor initializes an empty array deque with an initial capacity sufficient to hold 16 elements. It is useful when you are creating an empty <code class="language-java">ArrayDeque</code> without a predetermined size.
+
+	<pre><code class="language-java">Deque&lt;String&gt; deque = new ArrayDeque&lt;String&gt;();</code></pre>
+</li>
+<li><code class="language-java"><strong>ArrayDeque(int numElements)</strong></code>: This constructor initializes an empty array deque with an initial capacity specified by the number of elements. This is useful when you already know how many elements the <code class="language-java">ArrayDeque</code> will contain.
+	<pre><code class="language-java">Deque&lt;String&gt; deque = new ArrayDeque&lt;String&gt;(100);</code></pre>
+</li>
+</ol>
+<p>In the second example, the <code class="language-java">ArrayDeque</code> is initialized with a capacity large enough to hold 100 elements. This can be more efficient if you anticipate adding a large number of items to the deque.</p>
+<p>Keep in mind that <code class="language-java">ArrayDeque</code> objects in Java are dynamic, meaning they can grow and shrink at runtime. Therefore, even if you initialize an <code class="language-java">ArrayDeque</code> with a specific capacity, it can still expand beyond that if necessary. Setting an initial capacity is mainly for performance optimization; it allows the <code class="language-java">ArrayDeque</code> to operate more efficiently by reducing the need for frequent resizing.</p>
+<p>Adding elements:</p>
+<ul>
+<li><strong><code class="language-java">addFirst(E e)</code></strong>: Adds the specified element at the beginning of the deque.</li>
+<li><strong><code class="language-java">addLast(E e)</code></strong>: Adds the specified element to the end of the deque.
+	<pre><code class="language-java">deque.addFirst("Element 1");
+deque.addLast("Element 2");</code></pre>
+</li>
+</ul>
+<p>Removing elements<strong>:</strong></p>
+<ul>
+<li><strong><code class="language-java">removeFirst()</code></strong>: Removes and returns the first element from the deque. If the deque is empty, this method throws <strong><code class="language-java">NoSuchElementException</code></strong></li>
+<li><strong><code class="language-java">removeLast()</code></strong>: Removes and returns the last element from the deque. If the deque is empty, this method throws a <code class="language-java">NoSuchElementException</code>.
+	<pre><code class="language-java">String firstElement = deque.removeFirst();
+String lastElement = deque.removeLast();</code></pre>
+</li>
+</ul>
+<p>Deque size<strong>:</strong></p>
+<ul>
+<li><strong><code class="language-java">size()</code></strong>: Returns the number of elements in the deque.</li>
+<li><strong><code class="language-java">isEmpty()</code></strong>: Returns <code class="language-java">true</code> if the deque contains no elements.
+	<pre><code class="language-java">int size = deque.size();
+boolean isEmpty = deque.isEmpty();</code></pre>
+</li>
+</ul>
+<p>Clearing the deque:</p>
+<ul>
+<li><strong><code class="language-java">clear()</code></strong>: Removes all elements from the deque.
+
+	<pre><code class="language-java">deque.clear();</code></pre>
+</li>
+</ul>
+<p>Iterating over the deque:</p>
+<ul>
+<li>You can use a foreach loop to iterate through the elements in the deque. Note that the iterator for <code class="language-java">ArrayDeque</code> returns elements in a queue-like order, from the first (head) to the last (tail).
+
+	<pre><code class="language-java">for (String element : deque) {
+    System.out.println(element);
+}</code></pre>
+</li>
+</ul>
+<p>Remember that <code class="language-java">ArrayDeque</code> does not permit null elements. Attempting to use <code class="language-java">addFirst(null)</code>, <code class="language-java">addLast(null)</code>,<code class="language-java"> offerFirst(null)</code>, or <code class="language-java">offerLast(null)</code>, will result in a <code class="language-java">NullPointerException</code>.</p>
+<h5 id="example-checking-for-palindrome">Example: checking for palindrome</h5>
+<p>A <code class="language-java">Deque</code> can be used to check if a string is a palindrome, meaning it reads the same forwards and backwards. To do this, add each character of the string to the <code class="language-java">Deque</code>. Then, repeatedly compare and remove the first and last characters to determine if the string is a palindrome.</p>
+<pre><code class="language-java">import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class Main {
+    public static boolean isPalindrome(String str) {
+        Deque&lt;Character&gt; deque = new ArrayDeque&lt;Character&gt;();
+
+        for (int i = 0; i &lt; str.length(); i++) {
+            deque.addLast(str.charAt(i));
+        }
+
+        while (deque.size() &gt; 1) {
+            char first = deque.removeFirst();
+            char last = deque.removeLast();
+            if (first != last) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String str = "radar";
+        if (isPalindrome(str)) {
+            System.out.println(str + " is a palindrome.");
+        } else {
+            System.out.println(str + " is not a palindrome.");
+        }
+    }
+}
+</code></pre>
+<h5 id="conclusion">Conclusion</h5>
+<p><code class="language-java">ArrayDeque</code> is a versatile data structure in Java, implementing the <code class="language-java">Deque</code> interface. It provides functionality for both a double-ended queue and a stack. Notably, it offers constant time complexity for adding or removing elements from either end, which makes it more efficient than other data structure implementations for specific tasks. It's crucial to understand that <code class="language-java">ArrayDeque</code> does not allow null elements and is not thread-safe; it requires external synchronization if used in a multi-threaded environment. Overall, <code class="language-java">ArrayDeque</code> serves as a powerful tool for developers in need of dynamic, resizable data structures that offer efficient operations.</p>
+</div>

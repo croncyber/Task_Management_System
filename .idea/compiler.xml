@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.42/8365263844ebb62398e0dc33057ba10ba472d3b8/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="Task_Management_System.Task_Management_System-task.main" />
+        <module name="Task_Management_System.Task_Management_System-task.test" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="25">
+      <module name="Task_Management_System.Task_Management_System-task-build-classes-java.main" target="23" />
+      <module name="Task_Management_System.Task_Management_System-task-build-generated-sources-annotationProcessor-java.main" target="23" />
+      <module name="Task_Management_System.Task_Management_System-task-build-generated-sources-headers-java.main" target="23" />
+      <module name="Task_Management_System.Task_Management_System-task-build-reports-tests.main" target="23" />
+      <module name="Task_Management_System.Task_Management_System-task-build-test-results.main" target="23" />
+      <module name="Task_Management_System.Task_Management_System-task-build-tmp.main" target="23" />
+      <module name="Task_Management_System.Task_Management_System-task.main" target="23" />
+      <module name="Task_Management_System.Topics-ArrayDeque-ArrayDeque.main" target="23" />
+      <module name="Task_Management_System.Topics-ArrayDeque-Max_value.main" target="23" />
+      <module name="Task_Management_System.Topics-ArrayDeque-Queue.main" target="23" />
+      <module name="Task_Management_System.Topics-ArrayDeque-Remove_vowels.main" target="23" />
+      <module name="Task_Management_System.Topics-ArrayDeque-Reverse_string.main" target="23" />
+      <module name="Task_Management_System.Topics-Class_Loader-Class_Loader.main" target="23" />
+      <module name="Task_Management_System.Topics-Class_Loader-What_class_loader_is_used.main" target="23" />
+      <module name="Task_Management_System.Topics-Convert_text_input-Calculate_the_area_of_a_rectangle.main" target="23" />
+      <module name="Task_Management_System.Topics-Convert_text_input-Convert_text_input.main" target="23" />
+      <module name="Task_Management_System.Topics-Convert_text_input-Using_logic_to_add_two_integers.main" target="23" />
+      <module name="Task_Management_System.Topics-Enumset-A_Frontend_module.main" target="23" />
+      <module name="Task_Management_System.Topics-Enumset-Enumset.main" target="23" />
+      <module name="Task_Management_System.Topics-Enumset-Set_of_vowels.main" target="23" />
+      <module name="Task_Management_System.Topics-Enumset-The_correct_set.main" target="23" />
+      <module name="Task_Management_System.Topics-Fundamentals_of_interfaces_in_Java-Account_Service.main" target="23" />
+      <module name="Task_Management_System.Topics-Fundamentals_of_interfaces_in_Java-Compact_strings_with_AsciiCharSequence.main" target="23" />
+      <module name="Task_Management_System.Topics-Fundamentals_of_interfaces_in_Java-Fundamentals_of_interfaces_in_Java.main" target="23" />
+      <module name="Task_Management_System.Topics-Fundamentals_of_interfaces_in_Java-Moving_vehicles.main" target="23" />
+      <module name="Task_Management_System.Topics-Fundamentals_of_interfaces_in_Java-Mutable_geometric_shapes.main" target="23" />
+      <module name="Task_Management_System.Topics-Introduction_to_HashSet-Element_existence_check.main" target="23" />
+      <module name="Task_Management_System.Topics-Introduction_to_HashSet-Introduction_to_HashSet.main" target="23" />
+      <module name="Task_Management_System.Topics-Iterator-Iterable_range.main" target="23" />
+      <module name="Task_Management_System.Topics-Iterator-Iterator.main" target="23" />
+      <module name="Task_Management_System.Topics-Iterator-List_iterator.main" target="23" />
+      <module name="Task_Management_System.Topics-Iterator-Tree_iterator.main" target="23" />
+      <module name="Task_Management_System.Topics-java_util_Arrays-Convert_the_array_to_a_stream.main" target="23" />
+      <module name="Task_Management_System.Topics-java_util_Arrays-java_util_Arrays.main" target="23" />
+      <module name="Task_Management_System.Topics-Memento-Memento.main" target="23" />
+      <module name="Task_Management_System.Topics-Memento-Mutations.main" target="23" />
+      <module name="Task_Management_System.Topics-Memento-Reference_type.main" target="23" />
+      <module name="Task_Management_System.Topics-Memento-Roll_back.main" target="23" />
+      <module name="Task_Management_System.Topics-Nested_classes-Create_prototype.main" target="23" />
+      <module name="Task_Management_System.Topics-Nested_classes-Find_min_and_max.main" target="23" />
+      <module name="Task_Management_System.Topics-Nested_classes-Make_slices.main" target="23" />
+      <module name="Task_Management_System.Topics-Nested_classes-Nested_classes.main" target="23" />
+      <module name="Task_Management_System.Topics-Patterns_and_Matcher-In_the_middle_of_a_word.main" target="23" />
+      <module name="Task_Management_System.Topics-Patterns_and_Matcher-Number_parsing.main" target="23" />
+      <module name="Task_Management_System.Topics-Patterns_and_Matcher-Patterns_and_Matcher.main" target="23" />
+      <module name="Task_Management_System.Topics-Patterns_and_Matcher-Start_or_end_of_a_word.main" target="23" />
+      <module name="Task_Management_System.Topics-State-A_simple_device.main" target="23" />
+      <module name="Task_Management_System.Topics-State-State.main" target="23" />
+      <module name="Task_Management_System.Topics-The_SequencedCollection_interface-Palindrome_ends_check.main" target="23" />
+      <module name="Task_Management_System.Topics-The_SequencedCollection_interface-The_SequencedCollection_interface.main" target="23" />
+      <module name="Task_Management_System.Topics-The_SequencedCollection_interface-Transfer_backwards.main" target="23" />
+      <module name="Task_Management_System.util.main" target="23" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Task_Management_System.Task_Management_System-task" options="-parameters" />
+      <module name="Task_Management_System.Task_Management_System-task.main" options="-parameters" />
+      <module name="Task_Management_System.Task_Management_System-task.test" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -1,0 +1,113 @@
+<div class="step-text">
+<p>When we write programs, we often create classes that contain collections of various types, such as arrays, lists, hashmaps, and so on. We often need to access those collections from other parts of our code and iterate over them, for example, to modify them, calculate the sum of their values or apply some other methods to them. Wouldn't it be great if we could have a universal interface to access elements of any collection contained in a Java class? Luckily, the <strong>Iterator <a class="theory-lookup not-relevant" href="/learn/step/18021" target="_blank" title="In Java, a design pattern is a reusable solution to a common problem that occurs in software design. | It provides a general template for how to solve a problem, rather than a specific implementation. The Strategy pattern, for example, is a behavioral design pattern that defines a family of algorithms, encapsulates each one in a separate class, and makes them interchangeable within that family. This allows for easier addition of new algorithms and more concise code, by moving algorithm execution into their own classes. The Command pattern, another behavioral design pattern, decouples the logic between a command and its consumer by encapsulating all the data related to a command in one object.">design pattern</a></strong> provides such an interface, and we are going to investigate it in detail in this topic.</p>
+<h5 id="simple-problem">Simple problem</h5>
+<p>First of all, let us imagine a class that represents a range of dates.</p>
+<pre><code class="language-java">import java.time.LocalDate;
+
+class DateRange {
+    private final LocalDate from;
+    private final LocalDate to;
+
+    DateRange(String from, String to) {
+        this.from = LocalDate.parse(from);
+        this.to = LocalDate.parse(to);
+    }
+}</code></pre>
+<p>Now let's think about how we can access that range, for example, to print it to the console. For instance, we could simply make an array containing all the dates within the range and expose it so that we could access it from other classes. So we just add the following method to <code class="language-java">DateRange</code>:</p>
+<pre><code class="language-java">import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+
+class DateRange {
+
+    // fields, constructor
+
+    public LocalDate[] getRange() {
+        int length = (int) ChronoUnit.DAYS.between(from, to);
+        LocalDate[] range = new LocalDate[length];
+        
+        LocalDate start = from;
+        for (int i = 0; i &lt; length; i++) {
+            range[i] = start;
+            start = start.plusDays(1);
+        }
+
+        return range;
+    }
+}</code></pre>
+<p>Once it's done, let's create a special class that will be responsible for printing the range of dates exposed as an array:</p>
+<pre><code class="language-java">class DatePrinter {
+
+    public static void print(LocalDate[] array) {
+        for (int i = 0; i &lt; array.length; i++) {
+            System.out.println(array[i]);
+        }
+    }
+}</code></pre>
+<p>If we test this implementation, we'll see that it works as intended:</p>
+<pre><code class="language-java">DateRange range = new DateRange("2022-01-01", "2022-01-05");
+DatePrinter.print(range.getRange());</code></pre>
+<p>Here is what it will print:</p>
+<pre><code class="language-no-highlight">2022-01-01
+2022-01-02
+2022-01-03
+2022-01-04</code></pre>
+<p>Looks fine and doesn't promise any trouble, right? But what if after a while we are not satisfied with the current implementation of <code class="language-java">DateRange</code> and decide that exposing the range as <code class="language-java">List&lt;LocalDate&gt;</code> is more convenient? If we change the implementation detail of the <code class="language-java">getRange</code> method, it will break the client code: currently, it consumes an array but the range is going to be exposed as a <code class="language-java">List</code>. In our example, we have only one method that consumes the range but imagine what will happen if we have multiple consumers in different parts of our program!</p>
+<p>Do we have a better option? Fortunately, yes.</p>
+<h5 id="clever-design">Clever design</h5>
+<p>We can use Iterator, a behavioral design pattern invented to overcome all the difficulties we discussed above. The idea of this pattern is very simple. We can define a universal interface called Iterator to describe the capabilities we need from concrete iterators. We can implement this interface in different classes where we can put all iteration-related logic. On top of it, we can add a new method to any classes whose data we want to iterate, and that method will have the <code class="language-java">Iterator</code> return type but will return instances of concrete implementations of the Iterator interface.</p>
+<p>You can see how all the components come together in this diagram:</p>
+<p style="text-align: center;"><picture><img alt="Iterator diagram" height="369" name="Iterator.svg" src="https://ucarecdn.com/d2b7d089-cf07-40a7-b603-1d8046fef037/" width="555"/></picture></p>
+<p>Here, the <strong>Iterator</strong> is the iterator interface and the <strong>ConcreteIterator</strong> is a class representing its concrete implementation. The <strong>Aggregate</strong> is an interface that gives us a hint that any class implementing it can produce an iterator. The <strong>ConcreteAggregate</strong> is a class that implements the <code class="language-java">createIterator</code> method of the Aggregate interface to return a certain ConcreteIterator. Finally, the <strong>Client</strong> is the code where the Aggregate and the Iterator are called.</p>
+<p>Let's try to reproduce this diagram in practice.</p>
+<h5 id="practical-solution">Practical solution</h5>
+<p>Let's return to our <code class="language-java">DateRange</code> class. First of all, we don't really need to create a collection of all dates in the range. Instead, we can keep just the <code class="language-java">start</code> and the <code class="language-java">end</code> values of the range and move all the logic related to iteration over the range to a separate class implementing the <code class="language-java">DateIterator</code> interface.</p>
+<pre><code class="language-java">interface DateIterator {
+
+    boolean hasNext();
+
+    LocalDate next();
+}</code></pre>
+<p>Now, let's create a class implementing <code class="language-java">DateIterator</code> and make it an <a class="theory-lookup not-relevant" href="/learn/step/18021" target="_blank" title="In Java, an inner class is a class that is defined within another class or interface. | They are non-static nested classes, which means they have access to the members (variables and methods) of the outer class, including private ones. This increases encapsulation as the inner class can hide some code from other classes. Inner classes can be of two types: local and member. Local inner classes are defined within a block and have a scope restricted to that block. They are used when you need a class for a specific task within a method. Member inner classes are defined within a class but outside any method.">inner class</a> of <code class="language-java">DateRange</code>. Also, we are going to add a new method to <code class="language-java">DataRange</code>, which will return an instance of <code class="language-java">DateIterator</code>:</p>
+<pre><code class="language-java">class DateRange {
+    // fields, constructor, getters and setters
+
+    public DateIterator iterator() {
+        return new DateIteratorImpl();
+    }
+
+    private class DateIteratorImpl implements DateIterator {
+        private LocalDate current;
+
+        private DateIteratorImpl() {
+            current = from;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current.isBefore(to);
+        }
+
+        @Override
+        public LocalDate next() {
+            LocalDate prev = current;
+            current = current.plusDays(1);
+            return prev;
+        }
+    }
+}</code></pre>
+<p>It doesn't mean that the whole iteration logic now resides in a dedicated class. This way we will respect the single responsibility principle, and any breaking changes in the implementation of the <code class="language-java">DateRange</code> class will affect only the implementation of the associated iterator class but not the client code. In fact, users of the <code class="language-java">DateRange</code> class won't be able to notice any changes until they peek into the source code.</p>
+<p>We will have to modify the <code class="language-java">print</code> method to accept <code class="language-java">DateIterator</code>:</p>
+<pre><code class="language-java">public static void print(DateIterator iterator) {
+    while (iterator.hasNext()) {
+        System.out.println(iterator.next());
+    }
+}</code></pre>
+<p>Note that we can have multiple implementations of <code class="language-java">DateIterator</code> in the <code class="language-java">DateRange</code> class. For example, we can have a specialized iterator that exposes only weekends and a specialized iterator that exposes only national holidays within the range. From the client's point of view, they will behave in the same way, and the complex logic of identifying specific days will be hidden inside these iterator implementations.</p>
+<p> </p>
+<p></p>
+<div class="alert alert-primary">In Java, we have <code class="language-java">Iterator&lt;E&gt;</code>, a generic interface in the <code class="language-java">java.util</code> package, which is commonly used for working with collections. If you are going to implement the Iterator pattern, we recommend using the available Java interface because it will allow for easy integration with other Java libraries and frameworks. </div>
+<p> </p>
+<h5 id="conclusion">Conclusion</h5>
+<p>In this topic, you learned how to implement and use one of the most popular design patterns in Java. Of course, if you have a simple collection without any complex iteration logic, you can easily go without the Iterator pattern. However, if you need to implement a complex iteration logic or a special data structure, you might want to use this pattern to make working with your code simple and predictable.</p>
+<p>Don't be surprised if you find the Iterator pattern familiar — it is widely used, for instance, in the Collections framework, and it's likely you have already encountered it many times.</p>
+</div>

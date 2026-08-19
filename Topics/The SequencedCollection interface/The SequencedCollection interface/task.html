@@ -1,0 +1,93 @@
+<div class="step-text">
+<p>The <code class="language-java">SequencedCollection&lt;E&gt;</code> interface extends <code class="language-java">Collection&lt;E&gt;</code> with the ability to treat elements as an ordered sequence with two accessible ends. Rather than focusing only on containment (as standard collections do), it introduces a consistent way to work with the front and back of the collection.</p><p>It combines the general-purpose nature of a collection with the bidirectional capabilities typically associated with a <code class="language-java">List</code> or <code class="language-java">Deque</code>. Through a small, consistent set of methods, it allows you to access, insert, and remove elements from either end, as well as obtain a reversed view of the same data without copying.</p><p>This abstraction enables writing algorithms that operate uniformly across different collection types while preserving their natural encounter order semantics.</p><h5 id="the-sequencedcollection-interface">The SequencedCollection interface</h5><p><code class="language-java">SequencedCollection&lt;E&gt;</code> extends the standard <code class="language-java">Collection&lt;E&gt;</code> interface. It is the root interface for sequenced collections and is directly extended by <code class="language-java">List</code> and <code class="language-java">Deque</code>.</p><p>Here is what the interface looks like:</p><pre><code class="language-java">interface SequencedCollection&lt;E&gt; extends Collection&lt;E&gt; {
+    // Returns a reverse-ordered view of this collection
+    SequencedCollection&lt;E&gt; reversed();
+
+    // Methods promoted from Deque
+    void addFirst(E e);
+    void addLast(E e);
+    E getFirst();
+    E getLast();
+    E removeFirst();
+    E removeLast();
+}</code></pre><p>Notice that almost all of these methods, except <code class="language-java">reversed()</code>, were promoted from the <code class="language-java">Deque</code> interface. They also received default implementations. This means existing classes like <code class="language-java">ArrayList</code> and <code class="language-java">LinkedList</code> inherited these capabilities automatically without a complete rewrite.</p><h5 id="key-api-methods">Key API methods</h5><p>The interface introduces several methods for double-ended access. Below is a detailed breakdown of how they work.</p><ul><li><p><code class="language-java">addFirst(E e)</code>: This method inserts a new element at the front of the collection:</p></li></ul><pre><code class="language-java">SequencedCollection&lt;String&gt; items = new LinkedHashSet&lt;&gt;();
+items.add("B");
+items.add("C");
+
+items.addFirst("A");
+
+// Output: [A, B, C]
+System.out.println(items);</code></pre><p><strong>Implementation requirements:</strong> By default, this method throws an <code class="language-java">UnsupportedOperationException</code>. Implementations that determine the position of elements automatically (like a <code class="language-java">TreeSet</code> based on natural order) cannot support this. However, collections that allow positional insertion, like <code class="language-java">ArrayList</code>, <code class="language-java">LinkedList</code>, and <code class="language-java">LinkedHashSet</code>, override this method to support it.</p><ul><li><p><code class="language-java">addLast(E e)</code>: This method inserts a new element at the end of the collection:</p></li></ul><pre><code class="language-java">SequencedCollection&lt;String&gt; items = new LinkedHashSet&lt;&gt;();
+items.addFirst("A");
+items.addLast("Z");
+
+// Output: [A, Z]
+System.out.println(items);</code></pre><p><strong>Implementation requirements:</strong> Just like <code class="language-java">addFirst()</code>, the default implementation throws an <code class="language-java">UnsupportedOperationException</code> unless the specific class explicitly supports positional insertion.</p><ul><li><p><code class="language-java">getFirst()</code>: This method returns the first element in the collection according to its encounter order:</p></li></ul><pre><code class="language-java">SequencedCollection&lt;String&gt; tasks = new ArrayList&lt;&gt;();
+tasks.add("Design");
+tasks.add("Code");
+
+// Output: First task: Design
+System.out.println("First task: " + tasks.getFirst());</code></pre><p><strong>Implementation requirements:</strong> The default implementation retrieves an iterator from the collection and returns the first element it yields. If the collection is empty, it throws a <code class="language-java">NoSuchElementException</code>.</p><p><strong>Returns:</strong> The first element in the collection.</p><ul><li><p><code class="language-java">getLast()</code>: This method returns the last element in the collection:</p></li></ul><pre><code class="language-java">SequencedCollection&lt;String&gt; tasks = new ArrayList&lt;&gt;();
+tasks.add("Design");
+tasks.add("Code");
+
+// Output: Last task: Code
+System.out.println("Last task: " + tasks.getLast());</code></pre><p><strong>Implementation requirements:</strong> The default implementation obtains an iterator from the reversed view of the collection and returns the first element it finds. If the collection is empty, it throws a <code class="language-java">NoSuchElementException</code>.</p><p><strong>Returns:</strong> The last element in the collection.</p><ul><li><p><code class="language-java">removeFirst()</code>: This method removes and returns the first element in the collection. Unlike <code class="language-java">getFirst()</code>, which only inspects the element, this method modifies the collection:</p></li></ul><pre><code class="language-java">SequencedCollection&lt;String&gt; queue = new LinkedList&lt;&gt;();
+queue.add("Task 1");
+queue.add("Task 2");
+
+String removed = queue.removeFirst();
+
+// Output: Removed: Task 1
+System.out.println("Removed: " + removed);
+
+// Output: Remaining: [Task 2]
+System.out.println("Remaining: " + queue);</code></pre><p><strong>Implementation requirements:</strong> The default implementation retrieves an iterator, calls its <code class="language-java">next()</code> method to get the first element, removes it using the iterator's <code class="language-java">remove()</code> method, and returns the element. It throws a <code class="language-java">NoSuchElementException</code> if the collection is empty.</p><p><strong>Returns:</strong> The removed first element.</p><ul><li><p><code class="language-java">removeLast()</code>: This method removes and returns the last element in the collection:</p></li></ul><pre><code class="language-java">SequencedCollection&lt;String&gt; queue = new LinkedList&lt;&gt;();
+queue.add("Task 1");
+queue.add("Task 2");
+
+String removed = queue.removeLast();
+
+// Output: Removed: Task 2
+System.out.println("Removed: " + removed);
+
+// Output: Remaining: [Task 1]
+System.out.println("Remaining: " + queue);</code></pre><p><strong>Implementation requirements:</strong> The default implementation retrieves an iterator from the <code class="language-java">reversed()</code> view, removes the first element it yields, and returns it. It throws a <code class="language-java">NoSuchElementException</code> if the collection is empty.</p><p><strong>Returns:</strong> The removed last element.</p><ul><li><p><code class="language-java">Collections.unmodifiableSequencedCollection(SequencedCollection&lt;E&gt; c)</code>: This utility method returns an unmodifiable view of a specific <code class="language-java">SequencedCollection</code>:</p></li></ul><pre><code class="language-java">SequencedCollection&lt;String&gt; items = new ArrayList&lt;&gt;();
+items.addLast("A");
+items.addLast("B");
+
+SequencedCollection&lt;String&gt; readOnlyItems = Collections.unmodifiableSequencedCollection(items);
+
+// Reading works perfectly
+// Output: A
+System.out.println(readOnlyItems.getFirst());
+
+// This will throw an UnsupportedOperationException
+readOnlyItems.addFirst("C");</code></pre><p><strong>Implementation requirements:</strong> It wraps the provided collection in a view that blocks any structural modifications. If you call mutating methods like <code class="language-java">addFirst()</code>, <code class="language-java">removeLast()</code>, or <code class="language-java">clear()</code>, the program will throw an <code class="language-java">UnsupportedOperationException</code>.</p><p><strong>Returns:</strong> A read-only sequenced collection view.</p><h5 id="the-reversed-view">The reversed() view</h5><p>One of the most useful features of the interface is the <code class="language-java">reversed()</code> method. Before this method appeared, iterating backward through a collection was inconvenient. It often required traditional <code class="language-java">for</code> loops with decrementing indexes or special iterators.</p><p>The <code class="language-java">reversed()</code> method solves this by returning a reverse-ordered view of the original collection.</p><p>Note that it does not create a new collection or copy the data. It simply provides a window that looks at the existing elements from back to front. Since it is a view, any modifications made to the original collection immediately reflect in the reversed view, and vice versa.</p><pre><code class="language-java">import java.util.ArrayList;
+import java.util.SequencedCollection;
+
+public class ReversedViewDemo {
+    public static void main(String[] args) {
+        SequencedCollection&lt;Integer&gt; numbers = new ArrayList&lt;&gt;();
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+
+        SequencedCollection&lt;Integer&gt; reversedNumbers = numbers.reversed();
+
+        System.out.println("Original: " + numbers);         // Output: [1, 2, 3]
+        System.out.println("Reversed: " + reversedNumbers); // Output: [3, 2, 1]
+
+        // Modifying the original collection
+        numbers.add(4);
+        
+        System.out.println("Original after adding 4: " + numbers);         // Output: [1, 2, 3, 4]
+        System.out.println("Reversed after adding 4: " + reversedNumbers); // Output: [4, 3, 2, 1]
+
+        // Modifying the reversed view
+        reversedNumbers.removeFirst(); // Removes "4" (the first element in the reversed view)
+        
+        System.out.println("Original after removing from view: " + numbers); // Output: [1, 2, 3]
+    }
+}</code></pre><p>As you can see, <code class="language-java">reversedNumbers.removeFirst()</code> effectively performs an operation similar to <code class="language-java">removeLast()</code> on the underlying original collection.</p><h5 id="performance-characteristics">Performance characteristics</h5><p>While <code class="language-java">SequencedCollection</code> makes your code cleaner and more uniform, the interface does not change the performance characteristics of the underlying data structure. You still need to choose your implementations carefully.</p><p>In practice, most standard JDK implementations provide <span class="math-tex">\(O(1)\)</span> constant-time access to the first and last elements, but this is not guaranteed by the interface itself. Performance ultimately depends on the concrete implementation:</p><ul><li><p><code class="language-java">ArrayList</code>: An <code class="language-java">ArrayList</code> is backed by a contiguous array in memory. Adding or removing elements at the end with <code class="language-java">addLast()</code> or <code class="language-java">removeLast()</code> is generally very fast. These are <span class="math-tex">\(O(1)\)</span> operations. However, calling <code class="language-java">addFirst()</code> or <code class="language-java">removeFirst()</code> forces the JVM to shift every subsequent element in the array one position over. This makes front-end operations slow, resulting in <span class="math-tex">\(O(n)\)</span> time complexity. Use front operations on an <code class="language-java">ArrayList</code> with caution.</p></li><li><p><code class="language-java">LinkedHashSet</code>: This structure uses a hash table alongside a doubly-linked list running through its entries. Because of this linked list, accessing, adding, or removing elements at either the front or the back is a fast <span class="math-tex">\(O(1)\)</span> operation.</p></li><li><p><code class="language-java">LinkedList</code> or <code class="language-java">ArrayDeque</code>: These structures are specifically designed for efficient modifications at both ends. Calling <code class="language-java">addFirst()</code> or <code class="language-java">removeFirst()</code> on a <code class="language-java">Deque</code> or <code class="language-java">LinkedList</code> remains a fast <span class="math-tex">\(O(1)\)</span> operation.</p></li></ul><p>In practice, <code class="language-java">ArrayDeque</code> delivers better performance in most scenarios due to the memory usage specifics of <code class="language-java">LinkedList</code>. It should be the default choice, with <code class="language-java">LinkedList</code> considered only when you specifically need to work with the <code class="language-java">List</code> interface in addition to deque operations.</p><h5 id="conclusion">Conclusion</h5><p>The <code class="language-java">SequencedCollection&lt;E&gt;</code> interface, introduced in JDK 21, brings clarity and consistency to ordered collections in Java.</p><p>Below is an overview of its key characteristics:</p><ul><li><p><strong>Uniform end-access:</strong> It provides standard methods to add, retrieve, and remove elements at both the beginning and the end of the collection.</p></li><li><p><strong>Backward iteration:</strong> The <code class="language-java">reversed()</code> method provides a live, reverse-ordered view of the collection. This makes backward iteration as simple as a standard <code class="language-java">for-each</code> loop.</p></li><li><p><strong>Seamless integration:</strong> It fits naturally into the existing Java hierarchy, meaning <code class="language-java">List</code> and <code class="language-java">Deque</code> implement it automatically.</p></li><li><p><strong>Performance depends on implementation:</strong> The interface provides the methods, but the underlying class dictates whether those operations are fast or slow.</p></li><li><p><strong>Exception handling:</strong> It throws <code class="language-java">NoSuchElementException</code> when retrieving from an empty collection and <code class="language-java">UnsupportedOperationException</code> when modifying an unmodifiable collection.</p></li></ul><p>By programming to the <code class="language-java">SequencedCollection</code> interface, you can write expressive, order-aware code that easily adapts to different collection implementations.</p>
+</div>

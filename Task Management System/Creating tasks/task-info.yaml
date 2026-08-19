@@ -1,0 +1,47 @@
+type: edu
+files:
+  - name: src/resources/application.properties
+    visible: true
+    learner_created: false
+  - name: src/taskmanagement/Application.java
+    visible: true
+    learner_created: false
+  - name: build.gradle
+    visible: true
+    learner_created: false
+  - name: test/ApplicationTests.java
+    visible: true
+    learner_created: false
+  - name: test/TestTask.java
+    visible: true
+    learner_created: false
+  - name: test/TestUser.java
+    visible: true
+    learner_created: false
+  - name: src/taskmanagement/application/task/Task.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/application/task/CreateTaskCommand.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/infrastructure/adapter/in/web/request/CreateTaskRequest.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/application/task/CreateTaskUseCase.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/infrastructure/security/TaskAlreadyExistsException.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/application/task/GetAllTasksUseCase.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/application/task/GetAllTasksCommand.java
+    visible: true
+    learner_created: true
+feedback_link: https://hyperskill.org/projects/423/stages/2460/implement#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Mon, 04 May 2026 14:06:18 UTC"
+record: -1

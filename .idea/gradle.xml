@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="delegatedBuild" value="false" />
+        <option name="distributionType" value="WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="corretto-23" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Task Management System/task" />
+            <option value="$PROJECT_DIR$/Task Management System/task/build/classes/java" />
+            <option value="$PROJECT_DIR$/Task Management System/task/build/generated/sources/annotationProcessor/java" />
+            <option value="$PROJECT_DIR$/Task Management System/task/build/generated/sources/headers/java" />
+            <option value="$PROJECT_DIR$/Task Management System/task/build/reports/tests" />
+            <option value="$PROJECT_DIR$/Task Management System/task/build/test-results" />
+            <option value="$PROJECT_DIR$/Task Management System/task/build/tmp" />
+            <option value="$PROJECT_DIR$/Topics/ArrayDeque/ArrayDeque" />
+            <option value="$PROJECT_DIR$/Topics/ArrayDeque/Max value" />
+            <option value="$PROJECT_DIR$/Topics/ArrayDeque/Queue" />
+            <option value="$PROJECT_DIR$/Topics/ArrayDeque/Remove vowels" />
+            <option value="$PROJECT_DIR$/Topics/ArrayDeque/Reverse string" />
+            <option value="$PROJECT_DIR$/Topics/Class Loader/Class Loader" />
+            <option value="$PROJECT_DIR$/Topics/Class Loader/What class loader is used" />
+            <option value="$PROJECT_DIR$/Topics/Convert text input/Calculate the area of a rectangle" />
+            <option value="$PROJECT_DIR$/Topics/Convert text input/Convert text input" />
+            <option value="$PROJECT_DIR$/Topics/Convert text input/Using logic to add two integers" />
+            <option value="$PROJECT_DIR$/Topics/Enumset/A Frontend module" />
+            <option value="$PROJECT_DIR$/Topics/Enumset/Enumset" />
+            <option value="$PROJECT_DIR$/Topics/Enumset/Set of vowels" />
+            <option value="$PROJECT_DIR$/Topics/Enumset/The correct set" />
+            <option value="$PROJECT_DIR$/Topics/Fundamentals of interfaces in Java/Account Service" />
+            <option value="$PROJECT_DIR$/Topics/Fundamentals of interfaces in Java/Compact strings with AsciiCharSequence" />
+            <option value="$PROJECT_DIR$/Topics/Fundamentals of interfaces in Java/Fundamentals of interfaces in Java" />
+            <option value="$PROJECT_DIR$/Topics/Fundamentals of interfaces in Java/Moving vehicles" />
+            <option value="$PROJECT_DIR$/Topics/Fundamentals of interfaces in Java/Mutable geometric shapes" />
+            <option value="$PROJECT_DIR$/Topics/Introduction to HashSet/Element existence check" />
+            <option value="$PROJECT_DIR$/Topics/Introduction to HashSet/Introduction to HashSet" />
+            <option value="$PROJECT_DIR$/Topics/Iterator/Iterable range" />
+            <option value="$PROJECT_DIR$/Topics/Iterator/Iterator" />
+            <option value="$PROJECT_DIR$/Topics/Iterator/List iterator" />
+            <option value="$PROJECT_DIR$/Topics/Iterator/Tree iterator" />
+            <option value="$PROJECT_DIR$/Topics/Memento/Memento" />
+            <option value="$PROJECT_DIR$/Topics/Memento/Mutations" />
+            <option value="$PROJECT_DIR$/Topics/Memento/Reference type" />
+            <option value="$PROJECT_DIR$/Topics/Memento/Roll back" />
+            <option value="$PROJECT_DIR$/Topics/Nested classes/Create prototype" />
+            <option value="$PROJECT_DIR$/Topics/Nested classes/Find min and max" />
+            <option value="$PROJECT_DIR$/Topics/Nested classes/Make slices" />
+            <option value="$PROJECT_DIR$/Topics/Nested classes/Nested classes" />
+            <option value="$PROJECT_DIR$/Topics/Patterns and Matcher/In the middle of a word" />
+            <option value="$PROJECT_DIR$/Topics/Patterns and Matcher/Number parsing" />
+            <option value="$PROJECT_DIR$/Topics/Patterns and Matcher/Patterns and Matcher" />
+            <option value="$PROJECT_DIR$/Topics/Patterns and Matcher/Start or end of a word" />
+            <option value="$PROJECT_DIR$/Topics/State/A simple device" />
+            <option value="$PROJECT_DIR$/Topics/State/State" />
+            <option value="$PROJECT_DIR$/Topics/The SequencedCollection interface/Palindrome ends check" />
+            <option value="$PROJECT_DIR$/Topics/The SequencedCollection interface/The SequencedCollection interface" />
+            <option value="$PROJECT_DIR$/Topics/The SequencedCollection interface/Transfer backwards" />
+            <option value="$PROJECT_DIR$/Topics/java.util.Arrays/Convert the array to a stream" />
+            <option value="$PROJECT_DIR$/Topics/java.util.Arrays/java.util.Arrays" />
+            <option value="$PROJECT_DIR$/util" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

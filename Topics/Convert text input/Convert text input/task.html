@@ -1,0 +1,108 @@
+<div class="step-text">
+<p>When working with numerical input values, sometimes plain text is the representation provided. These text values are of <code class="language-java">String</code> type, not <code class="language-java">Integer</code>, <code class="language-java">float</code>, or <code class="language-java">boolean</code>, and will require conversion to an appropriate value that Java can work with. Java's built-in arithmetic and higher-level math operations require values as primitives or their corresponding wrapper types to perform mathematical functions. Otherwise, we will encounter errors due to wrong operand types. For this reason, we need to <strong>convert</strong> our text representations into the most suitable primitive or reference type. This topic shows you how to convert a text representation into usable Java types that you can use in various operations.</p>
+<h5 id="converting-text-representations">Converting text representations</h5>
+<p>Text input from the command-line arguments is a good example of text conversion requirements. Let's look at a code snippet named <code class="language-java">ConvertText</code>. Two parameters are required as input to avoid an exception <code class="language-java">(ArrayIndexOutOfBoundsException)</code>. Arguments <code class="language-java">20</code> and <code class="language-java">5.5</code> are passed at runtime when starting the application; these are the values we want to convert. We bring in two values without type designation, parse them to the required types needed, and then perform a numerical calculation. Upon running, the program will assign the values <code class="language-java">20</code> and <code class="language-java">5.5</code> to <code class="language-java">String</code> reference values <code class="language-java">a</code> and <code class="language-java">b</code>. <code class="language-java">Integer.parseInt(a)</code> converts <code class="language-java">String</code> <code class="language-java">20</code> to <code class="language-java">int</code> <code class="language-java">20</code>. The same happens to <code class="language-java">String</code> <code class="language-java">5.5</code> as it is converted to type <code class="language-java">float</code> by <code class="language-java">Float.parseFloat(b)</code>. The final calculation uses integer and floating-point arithmetic, providing the <code class="language-java">float</code> total value. This program illustrates text conversion using wrapper classes: <code class="language-java">Integer</code> and <code class="language-java">Float</code>. The final calculation uses two strings, parsed into <code class="language-java">int</code> and <code class="language-java">float</code>, then returning <code class="language-java">float</code>.</p>
+<pre><code class="language-java">// ConvertText 20 5.5
+public class ConvertText {
+    public static void main(String[] args) {
+        //args values: 20 5.5
+        String a = args[0]; // 20
+        String b = args[1]; // 5.5
+
+        int aInt = Integer.parseInt(a);     // 20 converted to int
+        float bFloat = Float.parseFloat(b); // 5.5 converted to float
+
+        float total = aInt * bFloat; //
+        System.out.println("total " + total);
+    }
+}</code></pre>
+<p>The <code class="language-java">float</code> value <code class="language-java">total</code> was calculated using the two converted arguments:</p>
+<pre><code class="language-java">float total = aInt * bFloat; // float total = 110.0</code></pre>
+<p>As a note: You can eliminate reference values <code class="language-java">a</code> and <code class="language-java">b</code> if you directly substitute <code class="language-java">args[0]</code> and <code class="language-java">args[1]</code> into the parse methods. The <code class="language-java">String[] args</code> initially converts the input arguments to <code class="language-java">String</code> type anyway, removing the need for reference values <code class="language-java">a</code> and <code class="language-java">b</code>. As seen below:</p>
+<pre><code class="language-java">int aInt = Integer.parseInt(args[0]);     // 20 converted to int
+float bFloat = Float.parseFloat(args[1]); // 5.5 converted to float</code></pre>
+<p>The <code class="language-java">boolean</code> <a class="theory-lookup not-relevant" href="/learn/step/32343" target="_blank" title="In Java, a primitive type is one of eight built-in data types provided by the language. | They are represented by keywords and are not objects, unlike reference types. Primitive types are divided into groups based on their meaning, and each group operates similarly but has different sizes and ranges of value. The most commonly used primitive type is `int`, which represents an integer number. Java also provides several types for integer and fractional numbers, which are often used in arithmetic expressions. Primitive types store their value directly, unlike reference types that store a reference to an object located elsewhere.">primitive type</a> also has a corresponding <a class="theory-lookup not-relevant" href="/learn/step/32343" target="_blank" title="In Java, a wrapper class is a class that encapsulates a primitive type in an object. | There are eight wrapper classes in Java, one for each primitive type: Integer for int, Double for double, Character for char, and so on. Wrapper classes are immutable and can be used in situations where objects are required instead of primitive types. Boxing is the process of converting a primitive type to an object of the corresponding wrapper class, while unboxing is the reverse process. Autoboxing and auto-unboxing are automatic conversions performed by the Java compiler between primitive types and wrapper classes.">wrapper class</a> named <code class="language-java">Boolean</code>. This type only has two values: <code class="language-java">true</code> and <code class="language-java">false</code>. This special method, <code class="language-java">Boolean.parseBoolean</code>, can convert text input — as a string argument — to a boolean. The <code class="language-java">String</code> must be equal to <code class="language-java">true</code> ignoring case (case-insensitive). Any other value — including <code class="language-java">null</code> — is evaluated to a boolean value <code class="language-java">false</code>. Let's now look at an example with the <code class="language-java">boolean</code> data type.</p>
+<p>This example puts four values into <code class="language-java">booleanArray</code>. The first array entry evaluates to true after using <code class="language-java">parseBoolean</code>; all three remaining entries <a class="theory-lookup not-relevant" href="/learn/step/32343" target="_blank" title="In Java, evaluate refers to the process of determining the value of an expression or a variable. | This is particularly useful in the context of debugging, where you can use the debugger's evaluate expression tool to adjust variable values and re-run sections of code. Additionally, Java uses a concept called short-circuit evaluation in which the JVM will not evaluate certain expressions if the outcome can be determined by evaluating only a subset of it. This can help save time and resources, especially in cases where evaluating one of the expressions has a side effect or is computationally expensive.">evaluate</a> <code class="language-java">false</code>.</p>
+<pre><code class="language-java">public class ConvertBoolean {
+    public static void main(String[] args) {
+        boolean[] booleanArray = {
+            Boolean.parseBoolean("true"),       // true
+            Boolean.parseBoolean("false"),      // false
+            Boolean.parseBoolean("anything"),   // false
+            Boolean.parseBoolean(null)          // false
+        };
+
+        for (boolean ba : booleanArray) {
+            System.out.println(ba);
+        }
+    }
+}</code></pre>
+<h5 id="parse-any-type">Parse any type</h5>
+<p>In the previous section, we saw how to get values to <code class="language-java">float</code>, <code class="language-java">int</code>, and <code class="language-java">boolean</code> from strings using wrapper parse methods. It's good to know that the string argument parses as a signed integer; the string can contain a plus sign "+" or a minus sign "-" to indicate a positive or negative value. An explicit positive sign, or no sign at all, are both considered positive values. You can find examples of parsing signed values below:</p>
+<pre><code class="language-java">double d = Double.parseDouble("-1.5"); // returns: -1.5
+double d = Double.parseDouble("+1.5"); // returns: 1.5
+double d = Double.parseDouble("1.5"); // returns: 1.5
+2 * Double.parseDouble("-1.5"); // returns: -3.0
+
+byte b = Byte.parseByte("-7"); // returns: -7
+byte b = Byte.parseByte("+7"); // returns: 7
+byte b = Byte.parseByte("7"); // returns: 7
+3 * Byte.parseByte("-7"); // returns: -21</code></pre>
+<p>The table below shows all the remaining parse methods that can be applied as needed.</p>
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;"><tbody><tr><td><p><strong>Table 1. Parse methods for primitive wrapper classes</strong></p></td></tr><tr><td><pre><code class="language-java">boolean bl = Boolean.parseBoolean("true");</code></pre><pre><code class="language-java">byte b = Byte.parseByte("7");</code></pre><pre><code class="language-java">short s = Short.parseShort("101");</code></pre><pre><code class="language-java">int i = Integer.parseInt("25");</code></pre><pre><code class="language-java">long l = Long.parseLong("5012345678");</code></pre><pre><code class="language-java">float f = Float.parseFloat("9.205");</code></pre><pre><code class="language-java">double d = Double.parseDouble("77.8989898989");</code></pre></td></tr></tbody></table>
+<p>Assignment can be applied to an object or primitive type (<code class="language-java">Integer</code>, <code class="language-java">int</code>) as seen below:</p>
+<pre><code class="language-java">int imPrimitive = Integer.parseInt("25");
+Integer imObject = Integer.parseInt("25");</code></pre>
+<p>When converting text, we can choose the correct type value as needed. You would pass an object value when required, such as using the Collections API or generic classes. On the other hand, converting to a primitive avoids all the overhead associated with autoboxing. Using primitives in computation-intensive tasks is always recommended.</p>
+<h5 id="radix-argument">Radix argument</h5>
+<p><strong>Radix </strong>indicates which number system to use. Up to this point, we have only looked at the parse method using the default radix, decimal (base 10). See below for some of the most common number systems in use:</p>
+<ul><li><p>binary — base 2 (0, 1);</p></li><li><p>octal — base 8 (0, 1, 2, 3, 4, 5, 6, 7);</p></li><li><p>decimal — base 10 (0, 1, 2, 3, 4, 5, 6, 7, 8, 9);</p></li><li><p><a class="theory-lookup not-relevant" href="/learn/step/32343" target="_blank" title="In Java, a hexadecimal is a number system that represents numbers using a base of 16, utilizing the digits 0-9 and letters A-F. | It is often used in programming to represent large numbers or specific character codes, such as Unicode. For instance, Unicode characters can be represented by a hexadecimal code starting with \u followed by four hexadecimal digits. In Java, a character is actually an integer type that stores the 16-bit Unicode integer value of each character. Therefore, character literals can be used as integers if needed.">hexadecimal</a> — base 16 (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F).</p></li></ul>
+<p>Now let's look at another form of the parse method that requires a radix (base) as the second argument. In the following example, the number system is base 10. The two-argument method has an explicit radix 10, which can be changed to any base as required. The single-argument method defaults to radix 10. The return value is 25 decimal (base 10) in both cases.</p>
+<pre><code class="language-java">int i = Integer.parseInt("25", 10); // return: 25 decimal
+int i = Integer.parseInt("25"); // return: 25 decimal</code></pre>
+<p>Changing the radix to octal (base 8), as seen below, the <a class="theory-lookup not-relevant" href="/learn/step/32343" target="_blank" title="In Java, a return value is the result that a method gives after executing its logic. | A method can return a value of a specific data type, or it can return no value, using the void keyword. If a method has a return type, it must include a return statement to provide the result. When invoking a method that returns a value, you can store it in a variable, print it, or pass it as an argument to another method.">return value</a> is now 21 decimal (base 10). </p>
+<pre><code class="language-java">int i = Integer.parseInt("25", 8); // return: decimal 21</code></pre>
+<p>Again, changing the radix to hexadecimal (base 16), the return value is 37 decimal.</p>
+<pre><code class="language-java">int i = Integer.parseInt("25", 16); // return: decimal 37</code></pre>
+<p>The following numerical wrapper classes (<code class="language-java">Byte</code>, <code class="language-java">Short</code>, <code class="language-java">Integer</code>, <code class="language-java">Long</code>) have a parse method with a radix. The first string argument is parsed in the radix as specified by the second argument. In the previous example, 16 is the number system that must be applied to <code class="language-java">"25"</code> to correctly interpret the value we want to convert to decimal 37.</p>
+<h5 id="numberformatexception">NumberFormatException</h5>
+<p>When using the parsing methods, we must be careful not to throw a <code class="language-java">NumberFormatException</code>. This exception happens when we try to convert an improperly formatted or illegal string value. The following list provides conditions that throw a <code class="language-java">NumberFormatException</code>:</p>
+<ul><li><p>a null first argument;</p></li><li><p>zero-length string;</p></li><li><p>radix is smaller or larger than permitted;</p></li><li><p>characters in the string argument are not digits found in the radix — exceptions: "+", "-";</p></li><li><p>the string argument is not of type <code class="language-java">int</code>.</p></li></ul>
+<p>Let's apply these conditions to see what happens. Below is an example using <code class="language-java">null</code>:</p>
+<pre><code class="language-java">Long.parseLong(null, 10) // NumberFormatException: null</code></pre>
+<p>Next, we throw due to an empty string:</p>
+<pre><code class="language-java">Long.parseLong("", 10) // NumberFormatException: For input string: ""</code></pre>
+<p>A Radix of 1 is not permitted here since it is less than <code class="language-java">Character.MIN_RADIX</code>.</p>
+<pre><code class="language-java">Integer.parseInt("21", 1) // NumberFormatException: radix 1 less than Character.MIN_RADIX</code></pre>
+<p>Now the radix is too large — greater than <code class="language-java">Character.MAX_RADIX</code>.</p>
+<pre><code class="language-java">Integer.parseInt("21", 37) // NumberFormatException: radix 37 greater than Character.MAX_RADIX</code></pre>
+<p>String "82" has a character not found in base 8. The only characters in base 8 are 0, 1, 2, 3, 4, 5, 6, and 7.</p>
+<pre><code class="language-java"> Integer.parseInt("82", 8) // NumberFormatException: For input string: "82"</code></pre>
+<p>In this case, <code class="language-java">"two"</code> will not convert to type <code class="language-java">int</code>.</p>
+<pre><code class="language-java">Integer.parseInt("two", 10) // NumberFormatException: For input string: "two"</code></pre>
+<p>It should now be clear that your application will throw a <code class="language-java">NumberFormatException</code> whenever you try to convert a string with an improper format. Now, let's look at a code example illustrating the use of the parse methods covered here. Since throwing an exception is possible, using a try-catch block on the code containing the parse methods is good practice.</p>
+<pre><code class="language-java">public class RadixArgument {
+    public static void main(String[] args) {
+
+        try {
+            int[] parsedArray = {
+                    Integer.parseInt("11", 2),    // decimal 3
+                    Integer.parseInt("13", 4),    // decimal 7
+                    Integer.parseInt("11", 8),    // decimal 9
+                    Integer.parseInt("-201", 10), // decimal -201
+                    Integer.parseInt("1F", 16),   // decimal 31
+                    Integer.parseInt("1N", 24)    // decimal 47
+            };
+
+            for (int i : parsedArray) {
+                System.out.println(i);
+            }
+
+        } catch (NumberFormatException e) {
+            System.err.println(e);
+        }
+    }
+}</code></pre>
+<h5 id="conclusion">Conclusion</h5>
+<p>When converting text input (string) into a primitive value or its respective object type, we can use special methods provided by wrapper classes; we use the parse methods to get each respective type from strings. All numerical types and boolean have separate parse methods. Also, we looked at the overloaded parse method for each primitive type; the single argument ("string") and the double arguments ("string", radix). Radix is key to the number system; it's crucial for the correct outcome. Finally, we saw that trying to convert improperly formatted string values will result in a <code class="language-java">NumberFormatException</code>.</p>
+</div>
